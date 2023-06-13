@@ -1,0 +1,123 @@
+baseURL: https://vaani-portfolio.netlify.app/
+languageCode: en-us
+title: Portfolio Website for Vaani Kohli
+theme: forty
+googleAnalytics: ''
+disqusShortname: ''
+params:
+  banner:
+    buttonText: Get Started
+    #subtitle: |-
+      #A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
+      #AND RELEASED UNDER THE CREATIVE COMMONS.
+    title: Hi, my name is Vaani. I am an MBA student at London Business School, currently completing my last term! This is the first time I have made a website.
+  blog: {}
+  contact:
+    address:
+      - city: London
+        country: United Kingdom
+        street: Edgware Road
+        title: Address
+    buttonClear: Clear
+    buttonSend: Send message
+    email:
+      - email: vgaur.mba2023@london.edu
+        title: Email
+    enable: yes
+    phone:
+      - phone: 0044-7765472320
+        title: Phone
+  custom_css: []
+  custom_js: []
+  description: Your description
+  error404:
+    heading: Page couldn't be found
+    text: Please visit [this page](/)
+  favicon: favicon.ico
+  footer:
+    copyright: Company Name
+    enable: yes
+    quicklinks:
+      - alt: HTML5 UP
+        text: 'Design: '
+        url: https://www.html5up.net
+    social:
+      #- icon: fa-twitter
+        #label: Twitter
+        #url: https://www.twitter.com
+      #- icon: fa-facebook
+        #label: Facebook
+        #url: https://www.facebook.com
+      - icon: fa-instagram
+        label: Instagram
+        url: https://www.instagram.com/vaanikohlii/
+      - icon: fa-github
+        label: GitHub
+        url: https://github.com/vaanikohli/
+      - icon: fa-linkedin
+        label: LinkedIn
+        url: https://www.linkedin.com/in/vaanigaur/
+  image: ''
+  name: Your name
+  navigation:
+    button1:
+      - name: Get Started
+        url: blogs
+    button2:
+      - name: Log In
+        url: '#'
+    links:
+      - name: Home
+        url: '#'
+      - name: Blogs
+        url: blogs
+      #- name: Generic Blog
+       # url: blogs/ipsum
+      #- name: Elements
+       # url: elements.html
+    menu: Menu
+    subtitle: By HTML5 Up
+    title: Forty
+  tiles:
+    enable: yes
+    showcase:
+      - image: pic02.jpg
+        subtitle: Data Visualisation - Exploration
+        title: Homework 2
+        url: https://tinyurl.com/9cjh4pht
+      - image: pic03.jpg
+        subtitle: Databases and Web Scraping
+        title: Homework 3
+        url: https://tinyurl.com/9cjh4pht
+      - image: pic04.jpg
+        subtitle: New Delhi
+        title: My Home City
+        url: https://tinyurl.com/36tynryp
+      - image: pic01.jpg
+        subtitle: Agatha Christie
+        title: My Favourite Author
+        url: https://tinyurl.com/mry4faae
+      - image: pic06.jpg
+        #subtitle: Ipsum Dolor Sit Amet
+        title: Last class at LBS!
+        url: blogs/ipsum
+      - image: pic05.jpg
+        subtitle: Snorkeling
+        title: Bucket List Item
+        url: https://tinyurl.com/yfkzbpt2
+  two:
+    buttonText: Get Started
+    enable: yes
+    subtitle: "Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero.
+      \r\n    Mauris aliquet magna magna sed nunc rhoncus pharetra. \r\n    Pellentesque
+      condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia
+      pellentesque lorem ipsum dolor. \r\n    Nullam et orci eu lorem consequat tincidunt.
+      Vivamus et sagittis libero.\r\n    Mauris aliquet magna magna sed nunc rhoncus
+      amet pharetra et feugiat tempus."
+    title: Massa libero
+    url: blogs
+  
+  markup: 
+  goldmark: 
+    renderer: 
+      unsafe: true
