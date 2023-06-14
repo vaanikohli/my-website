@@ -81,7 +81,7 @@ params:
   tiles:
     enable: yes
     showcase:
-      - image: pic02.jpg
+      - image: lbs.jpg
         subtitle: Data Visualisation - Exploration
         title: Homework 2
         url: https://tinyurl.com/9cjh4pht
