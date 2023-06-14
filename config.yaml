@@ -81,27 +81,27 @@ params:
       - image: lbs.jpg
         subtitle: Data Visualisation - Exploration
         title: Homework 2
-        url: blogs/aliquam
+        url: file:///C:/Users/Vaani%20Gaur/OneDrive/Desktop/dsb2023-vaani/homework2.html
       - image: pic03.jpg
         subtitle: Databases and Web Scraping
         title: Homework 3
-        url: blogs/tempus
+        url: file:///C:/Users/Vaani%20Gaur/OneDrive/Desktop/dsb2023-vaani/homework3.html
       - image: pic04.jpg
         subtitle: New Delhi
         title: My Home City
-        url: blogs/magna
+        url: https://www.britannica.com/place/New-Delhi
       - image: pic01.jpg
         subtitle: Agatha Christie
         title: My Favourite Author
-        url: blogs/ipsum
+        url: https://www.agathachristie.com/
       - image: pic06.jpg
         #subtitle: Ipsum Dolor Sit Amet
         title: Last class at LBS!
-        url: blogs/ipsum
+        url: file:///C:/Users/Vaani%20Gaur/Downloads/1_2.JPG.html
       - image: pic05.jpg
         subtitle: Snorkeling
         title: Bucket List Item
-        url: blogs/ipsum
+        url: https://www.divein.com/diving/snorkeling/
   two:
     buttonText: Get Started
     enable: yes
