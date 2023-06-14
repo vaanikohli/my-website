@@ -7,9 +7,6 @@ disqusShortname: ''
 params:
   banner:
     buttonText: Get Started
-    #subtitle: |-
-      #A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
-      #AND RELEASED UNDER THE CREATIVE COMMONS.
     title: Hi, my name is Vaani. I am an MBA student at London Business School, currently completing my last term! This is the first time I have made a website.
   blog: {}
   contact:
@@ -84,19 +81,19 @@ params:
       - image: lbs.jpg
         subtitle: Data Visualisation - Exploration
         title: Homework 2
-        url: https://tinyurl.com/9cjh4pht
+        url: blogs/aliquam
       - image: pic03.jpg
         subtitle: Databases and Web Scraping
         title: Homework 3
-        url: https://tinyurl.com/9cjh4pht
+        url: blogs/tempus
       - image: pic04.jpg
         subtitle: New Delhi
         title: My Home City
-        url: https://tinyurl.com/36tynryp
+        url: blogs/magna
       - image: pic01.jpg
         subtitle: Agatha Christie
         title: My Favourite Author
-        url: https://tinyurl.com/mry4faae
+        url: blogs/ipsum
       - image: pic06.jpg
         #subtitle: Ipsum Dolor Sit Amet
         title: Last class at LBS!
@@ -104,7 +101,7 @@ params:
       - image: pic05.jpg
         subtitle: Snorkeling
         title: Bucket List Item
-        url: https://tinyurl.com/yfkzbpt2
+        url: blogs/ipsum
   two:
     buttonText: Get Started
     enable: yes
@@ -117,7 +114,7 @@ params:
     title: Massa libero
     url: blogs
   
-  markup: 
+markup: 
   goldmark: 
     renderer: 
       unsafe: true
