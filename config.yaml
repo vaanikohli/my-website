@@ -98,7 +98,7 @@ params:
         #subtitle: Ipsum Dolor Sit Amet
         title: Last class at LBS!
         url: file:///C:/Users/Vaani%20Gaur/Downloads/1_2.JPG.html
-      - image: ocean.jpg
+      - image: ocean.jpeg
         subtitle: Snorkeling
         title: Bucket List Item
         url: https://www.divein.com/diving/snorkeling/
