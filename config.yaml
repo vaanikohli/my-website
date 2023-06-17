@@ -94,10 +94,10 @@ params:
         subtitle: Agatha Christie
         title: My Favourite Author
         url: https://www.agathachristie.com/
-      - image: 1.jpg
-        #subtitle: Ipsum Dolor Sit Amet
-        title: Last class at LBS!
-        url: file:///C:/Users/Vaani%20Gaur/Downloads/1_2.JPG.html
+      - image: LSR.jpg
+        subtitle: Lady Sri Ram College
+        title: Undergrad College
+        url: https://lsr.edu.in/
       - image: ocean.jpeg
         subtitle: Snorkeling
         title: Bucket List Item
