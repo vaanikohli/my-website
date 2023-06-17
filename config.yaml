@@ -86,7 +86,7 @@ params:
         subtitle: Databases and Web Scraping
         title: Homework 3
         url: blogs/homework3
-      - image: pic04.jpg
+      - image: indiagate.jpg
         subtitle: New Delhi
         title: My Home City
         url: https://www.britannica.com/place/New-Delhi
@@ -98,7 +98,7 @@ params:
         #subtitle: Ipsum Dolor Sit Amet
         title: Last class at LBS!
         url: file:///C:/Users/Vaani%20Gaur/Downloads/1_2.JPG.html
-      - image: pic05.jpg
+      - image: ocean.jpg
         subtitle: Snorkeling
         title: Bucket List Item
         url: https://www.divein.com/diving/snorkeling/
