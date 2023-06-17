@@ -1,0 +1,216 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-31T22:42:51-05:00"
+description: Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna
+  sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa
+  sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem
+  consequat tincidunt. Vivamus et sagittis tempus.
+draft: false
+image: pic07.jpg
+keywords: ""
+slug: scraping
+title: Scraping the Web
+---
+
+
+
+<div id="money-in-us-politics" class="section level1">
+<h1>Money in US politics</h1>
+<p>In the United States, <a href="https://www.opensecrets.org/political-action-committees-pacs/foreign-connected-pacs"><em>“only American citizens (and immigrants with green cards) can contribute to federal politics, but the American divisions of foreign companies can form political action committees (PACs) and collect contributions from their American employees.”</em></a></p>
+<p>We will scrape and work with data foreign connected PACs that donate to US political campaigns. The data for foreign connected PAC contributions in the 2022 election cycle can be found at <a href="https://www.opensecrets.org/political-action-committees-pacs/foreign-connected-pacs/2022" class="uri">https://www.opensecrets.org/political-action-committees-pacs/foreign-connected-pacs/2022</a>. Then, we will use a similar approach to get data such contributions from previous years so that we can examine trends over time.</p>
+<p>All data come from <a href="https://www.opensecrets.org">OpenSecrets.org</a>, a <em>“website tracking the influence of money on U.S. politics, and how that money affects policy and citizens’ lives”</em>.</p>
+<pre class="r"><code>library(robotstxt)
+paths_allowed(&quot;https://www.opensecrets.org&quot;)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>base_url &lt;- &quot;https://www.opensecrets.org/political-action-committees-pacs/foreign-connected-pacs/2022&quot;
+
+contributions_tables &lt;- base_url %&gt;%
+  read_html()</code></pre>
+<ul>
+<li>First, make sure you can scrape the data for 2022. Use janitor::clean_names() to rename variables scraped using <code>snake_case</code> naming.</li>
+</ul>
+<pre class="r"><code>library(janitor)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;janitor&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     chisq.test, fisher.test</code></pre>
+<pre class="r"><code>contributions_tables &lt;- contributions_tables %&gt;%
+  clean_names()</code></pre>
+<ul>
+<li><p>Clean the data:</p>
+<ul>
+<li>Write a function that converts contribution amounts in <code>total</code>, <code>dems</code>, and <code>repubs</code> from character strings to numeric values.</li>
+</ul>
+<pre class="r"><code>base_url &lt;- &quot;https://www.opensecrets.org/political-action-committees-pacs/foreign-connected-pacs/2022&quot;
+
+tables &lt;- base_url %&gt;%
+  read_html() %&gt;%
+  html_nodes(css=&quot;table&quot;) %&gt;% # this will isolate all tables on page
+  html_table() # Parse an html table into a dataframe
+
+tables</code></pre>
+<pre><code>## [[1]]
+## # A tibble: 215 × 5
+##    `PAC Name (Affiliate)`              Country of Origin/Pa…¹ Total Dems  Repubs
+##    &lt;chr&gt;                               &lt;chr&gt;                  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; 
+##  1 Accenture (Accenture)               Ireland/Accenture plc  $3,0… $0    $3,000
+##  2 Acreage Holdings                    Canada/Acreage Holdin… $0    $0    $0    
+##  3 Air Liquide America                 France/L&#39;Air Liquide … $17,… $14,… $2,500
+##  4 Airbus Group                        Netherlands/Airbus Gr… $193… $82,… $111,…
+##  5 Alexion Pharmaceuticals (AstraZene… UK/AstraZeneca PLC     $186… $104… $82,2…
+##  6 Alkermes Inc                        Ireland/Alkermes Plc   $84,… $34,… $50,0…
+##  7 Allianz of America (Allianz)        Germany/Allianz AG Ho… $31,… $20,… $11,0…
+##  8 AMG Vanadium                        Netherlands/AMG Advan… $2,5… $0    $2,525
+##  9 Anheuser-Busch (Anheuser-Busch InB… Belgium/Anheuser-Busc… $457… $218… $239,…
+## 10 AON Corp (AON plc)                  UK/AON PLC             $98,… $52,… $46,5…
+## # ℹ 205 more rows
+## # ℹ abbreviated name: ¹​`Country of Origin/Parent Company`</code></pre>
+<pre class="r"><code>contributions &lt;- tables[[1]] %&gt;% 
+  janitor::clean_names()</code></pre>
+<ul>
+<li>Separate the <code>country_of_origin_parent_company</code> into two such that country and parent company appear in different columns for country-level analysis.</li>
+</ul></li>
+</ul>
+<pre class="r"><code># write a function to parse_currency
+parse_currency &lt;- function(x){
+  x %&gt;%
+    
+    # remove dollar signs
+    str_remove(&quot;\\$&quot;) %&gt;%
+    
+    # remove all occurrences of commas
+    str_remove_all(&quot;,&quot;) %&gt;%
+    
+    # convert to numeric
+    as.numeric()
+}
+
+# clean country/parent co and contributions 
+contributions &lt;- contributions %&gt;%
+  separate(country_of_origin_parent_company, 
+           into = c(&quot;country&quot;, &quot;parent&quot;), 
+           sep = &quot;/&quot;, 
+           extra = &quot;merge&quot;) %&gt;%
+  mutate(
+    total = parse_currency(total),
+    dems = parse_currency(dems),
+    repubs = parse_currency(repubs)
+  )</code></pre>
+<ul>
+<li><p>Write a function called <code>scrape_pac()</code> that scrapes information from the Open Secrets webpage for foreign-connected PAC contributions in a given year. This function should</p>
+<ul>
+<li>have one input: the URL of the webpage and should return a data frame.</li>
+<li>add a new column to the data frame for <code>year</code>. We will want this information when we ultimately have data from all years, so this is a good time to keep track of it. Our function doesn’t take a year argument, but the year is embedded in the URL, so we can extract it out of there, and add it as a new column. Use the <code>str_sub()</code> function to extract the last 4 characters from the URL. You will probably want to look at the help for this function to figure out how to specify “last 4 characters”.</li>
+</ul></li>
+<li><p>Define the URLs for 2022, 2020, and 2000 contributions. Then, test your function using these URLs as inputs. Does the function seem to do what you expected it to do?</p></li>
+<li><p>Construct a vector called <code>urls</code> that contains the URLs for each webpage that contains information on foreign-connected PAC contributions for a given year.</p></li>
+<li><p>Map the <code>scrape_pac()</code> function over <code>urls</code> in a way that will result in a data frame called <code>contributions_all</code>.</p></li>
+<li><p>Write the data frame to a csv file called <code>contributions-all.csv</code> in the <code>data</code> folder.</p></li>
+</ul>
+<pre class="r"><code>base_url &lt;- &quot;https://www.opensecrets.org/political-action-committees-pacs/foreign-connected-pacs/2022&quot;
+
+tables &lt;- base_url %&gt;%
+  read_html() %&gt;%
+  html_nodes(css=&quot;table&quot;) %&gt;% # this will isolate all tables on page
+  html_table() # Parse an html table into a dataframe
+
+tables</code></pre>
+<pre><code>## [[1]]
+## # A tibble: 215 × 5
+##    `PAC Name (Affiliate)`              Country of Origin/Pa…¹ Total Dems  Repubs
+##    &lt;chr&gt;                               &lt;chr&gt;                  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; 
+##  1 Accenture (Accenture)               Ireland/Accenture plc  $3,0… $0    $3,000
+##  2 Acreage Holdings                    Canada/Acreage Holdin… $0    $0    $0    
+##  3 Air Liquide America                 France/L&#39;Air Liquide … $17,… $14,… $2,500
+##  4 Airbus Group                        Netherlands/Airbus Gr… $193… $82,… $111,…
+##  5 Alexion Pharmaceuticals (AstraZene… UK/AstraZeneca PLC     $186… $104… $82,2…
+##  6 Alkermes Inc                        Ireland/Alkermes Plc   $84,… $34,… $50,0…
+##  7 Allianz of America (Allianz)        Germany/Allianz AG Ho… $31,… $20,… $11,0…
+##  8 AMG Vanadium                        Netherlands/AMG Advan… $2,5… $0    $2,525
+##  9 Anheuser-Busch (Anheuser-Busch InB… Belgium/Anheuser-Busc… $457… $218… $239,…
+## 10 AON Corp (AON plc)                  UK/AON PLC             $98,… $52,… $46,5…
+## # ℹ 205 more rows
+## # ℹ abbreviated name: ¹​`Country of Origin/Parent Company`</code></pre>
+</div>
+<div id="scraping-consulting-jobs" class="section level1">
+<h1>Scraping consulting jobs</h1>
+<p>The website <a href="https://www.consultancy.uk/jobs">https://www.consultancy.uk/jobs/</a> lists job openings for consulting jobs.</p>
+<pre class="r"><code>library(robotstxt)
+paths_allowed(&quot;https://www.consultancy.uk&quot;) #is it ok to scrape?</code></pre>
+<pre><code>## 
+ www.consultancy.uk</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>base_url &lt;- &quot;https://www.consultancy.uk/jobs/page/1&quot;
+
+listings_html &lt;- base_url %&gt;%
+  read_html()</code></pre>
+<p>Identify the CSS selectors in order to extract the relevant information from this page, namely</p>
+<ol style="list-style-type: decimal">
+<li>job - #vacaturenaam</li>
+<li>firm - #bedrijf</li>
+<li>functional area - #dataTable &gt; tbody &gt; tr:nth-child(1) &gt; th.hide-tablet-and-less</li>
+<li>type - #dataTable &gt; tbody &gt; tr:nth-child(1) &gt; th.hide-tablet-landscape</li>
+</ol>
+<p>Can you get all pages of ads, and not just the first one, <code>https://www.consultancy.uk/jobs/page/1</code> into a dataframe?</p>
+<ul>
+<li><p>Write a function called <code>scrape_jobs()</code> that scrapes information from the webpage for consulting positions. This function should</p>
+<ul>
+<li><p>have one input: the URL of the webpage and should return a data frame with four columns (variables): job, firm, functional area, and type</p></li>
+<li><p>Test your function works with other pages too, e.g., <a href="https://www.consultancy.uk/jobs/page/2" class="uri">https://www.consultancy.uk/jobs/page/2</a>. Does the function seem to do what you expected it to do?</p></li>
+<li><p>Given that you have to scrape <code>...jobs/page/1</code>, <code>...jobs/page/2</code>, etc., define your URL so you can join multiple stings into one string, using <code>str_c()</code>. For instnace, if <code>page</code> is 5, what do you expect the following code to produce?</p></li>
+</ul></li>
+</ul>
+<!-- -->
+<ul>
+<li><p>Construct a vector called <code>pages</code> that contains the numbers for each page available</p></li>
+<li><p>Map the <code>scrape_jobs()</code> function over <code>pages</code> in a way that will result in a data frame called <code>all_consulting_jobs</code>.</p></li>
+<li><p>Write the data frame to a csv file called <code>all_consulting_jobs.csv</code> in the <code>data</code> folder.</p></li>
+</ul>
+<pre class="r"><code>get_page &lt;- function(pagenumber) {
+  
+  
+  base_url &lt;- &quot;https://www.consultancy.uk/jobs/page/&quot;
+  url &lt;- str_c(base_url, pagenumber)
+  
+  address &lt;- read_html(url)
+  
+  jobs &lt;- address %&gt;%
+    html_nodes(&quot;.title&quot;) %&gt;% 
+    html_text()
+  
+  
+  firm &lt;- address %&gt;%
+    html_nodes(&quot;.hide-phone .row-link&quot;) %&gt;% 
+    html_text()
+  
+  
+  functional_area &lt;- address %&gt;%
+    html_nodes(&quot;.initial&quot;) %&gt;% 
+    html_text2()
+  
+  
+  type  &lt;- address %&gt;%
+    html_nodes(&quot;.hide-tablet-landscape .row-link&quot;) %&gt;% 
+    html_text2()
+  
+  jobs_df &lt;- tibble(
+    jobs = jobs, 
+     firm = firm, 
+     functional_area = functional_area, 
+     type = type,
+    page = pagenumber
+  )
+  
+  return(jobs_df)
+}
+
+
+base_url &lt;- &quot;https://www.consultancy.uk/jobs/page/&quot;
+pages &lt;-  1:8
+
+
+alljobs &lt;- map_df(pages, get_page)</code></pre>
+</div>

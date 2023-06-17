@@ -78,14 +78,14 @@ params:
   tiles:
     enable: yes
     showcase:
-      #- image: lbs.jpg
-        #subtitle: Data Visualisation - Exploration
-        #title: Homework 2
-        #url: blogs/homework2
+      # - image: lbs.jpg
+      #   subtitle: Data Visualisation - Exploration
+      #   title: Homework 2
+      #   url: blogs/homework2
       - image: pic03.jpg
-        subtitle: Databases and Web Scraping
-        title: Homework 3
-        url: blogs/homework3
+        subtitle: Get data off the web
+        title: Web scraping
+        url: blogs/scraping
       - image: indiagate.jpg
         subtitle: New Delhi
         title: My Home City
